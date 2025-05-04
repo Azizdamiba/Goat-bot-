@@ -56,7 +56,7 @@ module.exports = {
 
     const priya = event.body.substring(ahprefix.length).trim();
     if (!priya) {
-      await message.reply('je suis danakro ai v2👾 quelle est votre question ?👾');
+      await message.reply('𝐌𝐨𝐢 𝐢 𝐚𝐦 𝐃𝐚𝐧𝐚𝐤𝐫𝐨 𝐀𝐢 𝐕2👾 𝐐𝐮𝐞𝐥𝐥𝐞 𝐞𝐬𝐭 𝐯𝐨𝐭𝐫𝐞 𝐪𝐮𝐞𝐬𝐭𝐢𝐨𝐧 ?👾');
       return;
     }
 
@@ -77,7 +77,7 @@ module.exports = {
 
     const encodedPrompt = encodeURIComponent(args.join(' '));
 
-    await message.reply('Danakro AI recherche la réponse.........');
+    await message.reply('𝐃𝐀𝐍𝐀𝐊𝐑𝐎 𝐀𝐈 recherche la réponse...........⏳🕔');
 
     try {
       const response = await axiosInstance.get(`https://priyansh-ai.onrender.com/gemini/ai?query=${encodedPrompt}`);
@@ -85,7 +85,7 @@ module.exports = {
       const priyares = `${Priya}`;
       await message.reply(priyares);
     } catch (error) {
-      await message.reply('Oops! Something went wrong. Please try again later.');
+      await message.reply('Oops! 𝐣𝐞 𝐯𝐢𝐞𝐧𝐬 𝐝𝐞 𝐬𝐡𝐨𝐩𝐩𝐞𝐫 𝐮𝐧 𝐛𝐢𝐠 𝐛𝐮𝐠. 𝐫𝐞́𝐞𝐬𝐬𝐚𝐲𝐞𝐫 𝐩𝐥𝐮𝐬 𝐭𝐚𝐫𝐝.');
     }
   }
 };
