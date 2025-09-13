@@ -2,7 +2,7 @@ const axios = require('axios');
 
 let PriyaPrefix = [
   'ai',
-  'shika',// Add Your Prefix Here
+  'shika', // Add Your Prefix Here
 ];
 
 const axiosInstance = axios.create();
@@ -16,50 +16,51 @@ module.exports = {
     author: 'Priyanshi || Priyansh',
     shortDescription: 'Artificial Intelligence',
     longDescription: 'Ask Anything To Ai For Your Answers',
-  },
+},
 
   onStart: async function () {},
 
-  onChat: async function ({ message, event, args, api, threadID, messageID }) {
+  onChat: async function ({ message, event, args, api}) {
+    if (!args || args.length === 0) return;
+
     const command = args[0].toLowerCase();
 
     // Help Command
     if (command === '🟢') {
       const helpMessage = `
-      🌟 *AI Commands* 🌟
-      - Prefixes: ${PriyaPrefix.join(', ')}
-      - Add Prefix: addprefix <prefix>
-      - AI Query: ${PriyaPrefix[0]} <your query>
-      - Say Hi: hi
-      `;
+🌟 *AI Commands* 🌟
+- Prefixes: ${PriyaPrefix.join(', ')}
+- Add Prefix: addprefix <prefix>
+- AI Query: ${PriyaPrefix[0]} <your query>
+- Say Hi: hi
+`;
       await message.reply(helpMessage);
       return;
-    }
+}
 
     // Add New Prefix Command
     if (command === 'addprefix') {
       const newPrefix = args[1];
-      if (newPrefix && !PriyaPrefix.includes(newPrefix)) {
+      if (newPrefix &&!PriyaPrefix.includes(newPrefix)) {
         PriyaPrefix.push(newPrefix);
-        await message.reply(`New prefix "${newPrefix}" added successfully!`);
-      } else {
-        await message.reply('Please provide a valid and unique prefix.');
-      }
+        await message.reply(`✅ Nouveau préfixe "${newPrefix}" ajouté avec succès!`);
+} else {
+        await message.reply('⚠️ Veuillez fournir un préfixe valide et unique.');
+}
       return;
-    }
+}
 
-    // Check for prefixes in the message
-    const ahprefix = PriyaPrefix.find((p) => event.body && event.body.toLowerCase().startsWith(p));
-    if (!ahprefix) {
+    // Check for valid prefix
+    const ahprefix = PriyaPrefix.find((p) => event.body?.toLowerCase().startsWith(p));
+    if (!ahprefix) return;
+
+    const prompt = event.body.substring(ahprefix.length).trim();
+    if (!prompt) {
+      await message.reply('𝐌𝐨𝐢 𝐢 𝐚𝐦 𝐃𝐚𝐧𝐚𝐤𝐫𝐨 𝐀𝐢 𝐕2👾 𝐐𝐮𝐞𝐥𝐥𝐞 𝐞𝐬𝐭 𝐯𝐨𝐭𝐫𝐞 𝐪𝐮𝐞𝐬𝐭𝐢𝐨𝐧?👾');
       return;
-    }
+}
 
-    const priya = event.body.substring(ahprefix.length).trim();
-    if (!priya) {
-      await message.reply('𝐌𝐨𝐢 𝐢 𝐚𝐦 𝐃𝐚𝐧𝐚𝐤𝐫𝐨 𝐀𝐢 𝐕2👾 𝐐𝐮𝐞𝐥𝐥𝐞 𝐞𝐬𝐭 𝐯𝐨𝐭𝐫𝐞 𝐪𝐮𝐞𝐬𝐭𝐢𝐨𝐧 ?👾');
-      return;
-    }
-
+    // Random greeting for "hi"
     const apply = [
       '𝚎𝚗𝚝𝚎𝚛 (𝚚)*',
       '𝙷𝚘𝚠 𝙲𝚊𝚗 𝙸 𝙷𝚎𝚕𝚙 𝚈𝚘𝚞?',
@@ -73,19 +74,19 @@ module.exports = {
     if (command === 'hi') {
       await message.reply(randomapply);
       return;
-    }
-
-    const encodedPrompt = encodeURIComponent(args.join(' '));
+}
 
     await message.reply('𝐃𝐀𝐍𝐀𝐊𝐑𝐎 𝐀𝐈 recherche la réponse...........⏳🕔');
 
     try {
-      const response = await axiosInstance.get(`https://priyansh-ai.onrender.com/gemini/ai?query=${encodedPrompt}`);
-      const Priya = response.data;
-      const priyares = `${Priya}`;
-      await message.reply(priyares);
-    } catch (error) {
-      await message.reply('Oops! 𝐣𝐞 𝐯𝐢𝐞𝐧𝐬 𝐝𝐞 𝐬𝐡𝐨𝐩𝐩𝐞𝐫 𝐮𝐧 𝐛𝐢𝐠 𝐛𝐮𝐠. 𝐫𝐞́𝐞𝐬𝐬𝐚𝐲𝐞𝐫 𝐩𝐥𝐮𝐬 𝐭𝐚𝐫𝐝.');
-    }
-  }
+      const encodedPrompt = encodeURIComponent(prompt);
+      const response = await axiosInstance.get(`https://fuku-api-v4.onrender.com/ask?prompt=${encodedPrompt}`);
+      const replyText = response.data;
+
+      await message.reply(`${replyText}`);
+} catch (error) {
+      console.error("Erreur API:", error.message);
+      await message.reply('❌ Une erreur est survenue. Réessaie plus tard!');
+}
+}
 };
